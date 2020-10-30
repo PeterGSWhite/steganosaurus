@@ -1,3 +1,4 @@
+# ToDo: The image doesn't preserve encoding when sent to client, needs fix
 from flask import Flask, request, send_file
 from steganography_functions import encode_data, decode_data
 from PIL import Image
@@ -19,6 +20,9 @@ def encode_image():
         data = request.form.get('data')
         # The text the user posted:
         image = encode_data(data, seed=seed)
+        print('pre serve:')
+        image_data_test_list = list(iter(image.copy().getdata()))
+        print(image_data_test_list[0], image_data_test_list[-1])
         return serve_pil_image(image)
 
 @app.route('/decode', methods=['POST'])

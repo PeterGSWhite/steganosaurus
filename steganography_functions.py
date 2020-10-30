@@ -10,8 +10,6 @@ from PIL import Image
 
 MINIMUM_IMAGE_WIDTH = 500
 MAXIMUM_IMAGE_WIDTH = 5000
-SEED = 'abcdefg'
-random.seed(a=SEED, version=2)
 
 def calculate_image_size(data_length):
     """Gets the width (all images are square) of the smallest image which can encode the data supplied
@@ -89,8 +87,10 @@ def tweak_pixels(pixel_values, data):
         yield pixel_values[6:9]
 
 def encode_data(data, seed=None):
-    print('type of data',type(data))
     """Encode data into a random image"""
+    print(data[-20:-1])
+    print(seed, 'encoding!')
+    random.seed(a=seed, version=2)
     if len(data) == 0:
         raise ValueError('Data is empty')
     width = calculate_image_size(len(data)) # The width of the image to be encoded
@@ -107,12 +107,19 @@ def encode_data(data, seed=None):
             y += 1
         else:
             x += 1
+    print('encoded:')
+    image_data_test_list = list(iter(image.copy().getdata()))
+    print(image_data_test_list[0], image_data_test_list[-1])
     return image
     #image.save('encoded_image.png')
 def decode_data(image, seed=None):
+    print(seed, 'decoding!')
     """Decode data from an image"""
+    random.seed(a=seed, version=2)
 
     image_data = iter(image.getdata())
+    image_data_test_list = list(iter(image.copy().getdata()))
+    print(image_data_test_list[0], image_data_test_list[-1])
     data = '' # Holds the full readable decoded message
     while True:
         # Need to get 3 pixels to decode each character of the message
@@ -136,5 +143,6 @@ def decode_data(image, seed=None):
 if __name__ == "__main__":
     #data = open('./datatoencode.txt', 'r').read()
     #encode_data(data)
-    image = Image.open('./encoded_image.png', 'r')
-    print(decode_data(image))
+    image = Image.open('/tmp/encoded.png', 'r')
+    #image = Image.open('encoded_image.png', 'r')
+    print('The decoded message:',decode_data(image, seed='hate'))
