@@ -89,12 +89,13 @@ def tweak_pixels(pixel_values, data):
         yield pixel_values[6:9]
 
 def encode_data(data, seed=None):
+    print('type of data',type(data))
     """Encode data into a random image"""
     if len(data) == 0:
         raise ValueError('Data is empty')
     width = calculate_image_size(len(data)) # The width of the image to be encoded
     if width > MAXIMUM_IMAGE_WIDTH:
-        raise ValueError('Too much data. Maximum of ', (MAXIMUM_IMAGE_WIDTH**2)/9,'characters')
+        raise ValueError('Too much data. Maximum of ', math.floor((MAXIMUM_IMAGE_WIDTH**2)/9),' characters')
     image = get_image_of_size(width) # Get random image of smallest size needed for data
     x, y = 0, 0
     
@@ -106,8 +107,8 @@ def encode_data(data, seed=None):
             y += 1
         else:
             x += 1
-
-    image.save('encoded_image.png')
+    return image
+    #image.save('encoded_image.png')
 def decode_data(image, seed=None):
     """Decode data from an image"""
 
