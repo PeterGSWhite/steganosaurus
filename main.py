@@ -1,15 +1,17 @@
 #ToDo: Make distinction between pixels and RGB value clear
-#ToDo: Add random seed to encoding
 #ToDo: Get everything hooked up to simple flask app
 #ToDo: Serve it as a Flask API to a nicer front end (react?)
 
 import math
 import requests
+import random
 from io import BytesIO
 from PIL import Image
 
 MINIMUM_IMAGE_WIDTH = 500
-SEED = None
+MAXIMUM_IMAGE_WIDTH = 5000
+SEED = 'abcdefg'
+random.seed(a=SEED, version=2)
 
 def calculate_image_size(data_length):
     """Gets the width (all images are square) of the smallest image which can encode the data supplied
@@ -40,54 +42,59 @@ def convert_data_to_ascii(data):
     for i in data:
         ascii_data.append(format(ord(i), '08b'))
     return ascii_data
-
-def tweak_pixels(pixels, data):
+def seed_bit_flip(data_bit):
+    ran = random.random()
+    if ran > 0.5: # Half of the time, flip the bit
+        data_bit = str(1-int(data_bit))
+    return data_bit
+def tweak_pixels(pixel_values, data):
     """Tweak pixels to encode the data"""
     data = convert_data_to_ascii(data) # need list of characters in 8-bit ascii format
-    image_data = iter(pixels)
+    image_data = iter(pixel_values)
 
     for i in range(len(data)):
 
         # Each encoded character requires 3 pixels to encode
-        pixels = [value for value in image_data.__next__()[:3] +
+        pixel_values = [value for value in image_data.__next__()[:3] +
                                 image_data.__next__()[:3] +
                                 image_data.__next__()[:3]]
 
-        # !!!delete:Pixel value should be made odd for 1 and even for 0
+        # Pixel value should be made odd for 1 and even for 0
         for j in range(0, 8):
-            if data[i][j] == '0' and pixels[j] % 2 != 0:
-                pixels[j] -= 1
+            data_bit = seed_bit_flip(data[i][j]) # random seed is used to figure out whether the bit should be flipped (1 -> 0 and vice versa)
+            if data_bit == '0' and pixel_values[j] % 2 != 0:
+                pixel_values[j] -= 1
 
-            elif data[i][j] == '1' and pixels[j] % 2 == 0:
-                if pixels[j] != 0:
-                    pixels[j] -= 1
+            elif data_bit == '1' and pixel_values[j] % 2 == 0:
+                if pixel_values[j] != 0:
+                    pixel_values[j] -= 1
                 else:
-                    pixels[j] += 1 # If the value is zero, can't deduct, so add instead
+                    pixel_values[j] += 1 # If the value is zero, can't deduct, so add instead
 
-        # 9th pixel is a read-more flag: ODD - There is more data to encode, EVEN - All data is encoded
+        # 9th pixel_value is a read-more flag: ODD - There is more data to encode, EVEN - All data is encoded
         if i + 1 == len(data): # In this case we are out of data
-            if pixels[-1] % 2 == 0: # Make sure the value is odd if it is even
-                if pixels[-1] != 0:
-                    pixels[-1] -= 1
+            if pixel_values[-1] % 2 == 0: # Make sure the value is odd if it is even
+                if pixel_values[-1] != 0:
+                    pixel_values[-1] -= 1
                 else:
-                    pixels[-1] += 1 # If the value is zero, can't deduct, so add instead
+                    pixel_values[-1] += 1 # If the value is zero, can't deduct, so add instead
 
         else: # In this case there is still more data to encode
-            if pixels[-1] % 2 != 0: # Make sure the value is even if it is odd
-                pixels[-1] -= 1
+            if pixel_values[-1] % 2 != 0: # Make sure the value is even if it is odd
+                pixel_values[-1] -= 1
 
-        pixels = tuple(pixels)
-        yield pixels[0:3]
-        yield pixels[3:6]
-        yield pixels[6:9]
+        pixel_values = tuple(pixel_values)
+        yield pixel_values[0:3]
+        yield pixel_values[3:6]
+        yield pixel_values[6:9]
 
 def encode_data(data, seed=None):
     """Encode data into a random image"""
     if len(data) == 0:
         raise ValueError('Data is empty')
-    #if len(data) > :
-        #exception
     width = calculate_image_size(len(data)) # The width of the image to be encoded
+    if width > MAXIMUM_IMAGE_WIDTH:
+        raise ValueError('Too much data. Maximum of ', (MAXIMUM_IMAGE_WIDTH**2)/9,'characters')
     image = get_image_of_size(width) # Get random image of smallest size needed for data
     x, y = 0, 0
     
@@ -118,9 +125,9 @@ def decode_data(image, seed=None):
 
         for i in pixels[:8]:
             if i % 2 == 0:
-                binary_str += '0'
+                binary_str += seed_bit_flip('0')
             else:
-                binary_str += '1'
+                binary_str += seed_bit_flip('1')
 
         data += chr(int(binary_str, 2)) # Convert 8-bit binary to a readable character
         if pixels[-1] % 2 != 0: # If the 9th pixel is even, it means the message is fully decoded
