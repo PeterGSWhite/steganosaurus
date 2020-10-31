@@ -88,8 +88,6 @@ def tweak_pixels(pixel_values, data):
 
 def encode_data(data, seed=None):
     """Encode data into a random image"""
-    print(data[-20:-1])
-    print(seed, 'encoding!')
     random.seed(a=seed, version=2)
     if len(data) == 0:
         raise ValueError('Data is empty')
@@ -107,19 +105,13 @@ def encode_data(data, seed=None):
             y += 1
         else:
             x += 1
-    print('encoded:')
-    image_data_test_list = list(iter(image.copy().getdata()))
-    print(image_data_test_list[0], image_data_test_list[-1])
     return image
     #image.save('encoded_image.png')
 def decode_data(image, seed=None):
-    print(seed, 'decoding!')
     """Decode data from an image"""
     random.seed(a=seed, version=2)
 
     image_data = iter(image.getdata())
-    image_data_test_list = list(iter(image.copy().getdata()))
-    print(image_data_test_list[0], image_data_test_list[-1])
     data = '' # Holds the full readable decoded message
     while True:
         # Need to get 3 pixels to decode each character of the message
@@ -145,4 +137,4 @@ if __name__ == "__main__":
     #encode_data(data)
     image = Image.open('/tmp/encoded.png', 'r')
     #image = Image.open('encoded_image.png', 'r')
-    print('The decoded message:',decode_data(image, seed='hate'))
+    print('The decoded message:',decode_data(image, seed='abcd'))
