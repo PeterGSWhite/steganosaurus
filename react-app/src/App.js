@@ -1,11 +1,20 @@
 import './App.css';
-import Form from './components/form'
+import Navbar from './components/Navbar'
+import Encode from './components/Encode'
+import Decode from './components/Decode'
+import About from './components/About'
+import { BrowserRouter, Route } from 'react-router-dom'
+
 
 function App() {
   return (
-    <div className="App">
-      <Form></Form>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Navbar/>
+        <Route exact path={["/", "/encode"]} component={Encode}/>
+        <Route path="/about" component={About}/>
+      </div>
+    </BrowserRouter>
   );
 }
 
