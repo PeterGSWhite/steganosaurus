@@ -11,8 +11,9 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Navbar/>
-        <Route exact path={["/", "/encode"]} component={Encode}/>
         <Route path="/about" component={About}/>
+        <Route exact path={["/", "/encode"]} component={Encode}/>
+        <Route path ="/decode" component={Decode}/>
       </div>
     </BrowserRouter>
   );
