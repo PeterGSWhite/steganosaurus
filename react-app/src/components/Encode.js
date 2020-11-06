@@ -1,20 +1,25 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 
 class Encode extends Component {  
     state = {
-        seed: null,
-        data: null,
+        seed: '',
+        data: '',
         pic: null,
-        buttonmessage: 'Encode into an Image!'
+        buttonmessage: 'Encode into an Image!',
+        buttondisabled: false
     }
     handleChange = (e) =>{
         this.setState({
             [e.target.id]: e.target.value
         })
     }
+    
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({buttonmessage: 'Loading...⌛'})
+        this.setState({
+            buttonmessage: 'Loading...⌛',
+            buttondisabled: true
+        })
         console.log(JSON.stringify({ seed: this.state.seed, data: this.state.data }))
         const requestOptions = {
             method: 'POST',
@@ -40,9 +45,11 @@ class Encode extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <p>First, choose a seed which will be used in the steganography algorithm. You will need to remember it if you want to decode your image again!</p>
                     <label htmlFor="seed">Enter seed for encryption</label>
-                    <input type="text" id="seed" onChange={this.handleChange}/>
+                    <input type="text" id="seed" onChange={this.handleChange} maxLength="100" onKeyPress={e => {
+                        if (e.key === 'Enter') e.preventDefault();
+                    }}/>
                     <br></br>
-                    <p>Next, enter the data you want to hide in an image. The maximum size is 2777 characters (including whitespace)</p>
+                    <p>Next, enter the data you want to hide in an image. {this.state.data ? this.state.data.length : 0}/2777 characters</p>
                     <label htmlFor="data">Enter data to encrypt</label>
                     <textarea
                         id="data"
@@ -50,21 +57,24 @@ class Encode extends Component {
                         placeholder="This data will be hidden in an image!"
                         onChange={this.handleChange}
                         value={this.state.data}
+                        maxLength="2777"
                     />
-                    <button>{this.state.buttonmessage}</button>
+                    {this.state.data ? this.state.data.length : null}
+                    <button disabled={this.state.buttondisabled}>{this.state.buttonmessage}</button>
                 </form>
             </div>
         ) : (
             <div className="container">
                 <p>Here is your image! To test the decoding, make sure you save the image as a .PNG to preserve the encoding!</p>
-                <p>Also don't forget what your seed was!</p>
-                <img alt="An image with data hidden in it" src={this.state.pic}/><br/>
+                <p>Also don't forget your seed is {this.state.seed}</p>
+                <img alt="There is data hidden here" src={this.state.pic}/><br/>
                 <button variant="primary" 
                     onClick={() => {
                         this.setState({
                             pic: null, 
-                            data: null, 
-                            buttonmessage: 'Encode into an Image!'
+                            data: '', 
+                            buttonmessage: 'Encode into an Image!',
+                            buttondisabled: false
                         })
                     }}>Encode another image?</button>
             </div>

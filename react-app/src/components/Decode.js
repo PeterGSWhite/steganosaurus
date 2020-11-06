@@ -8,11 +8,12 @@ function validateResponse(response) {
 }
 class Decode extends Component {
     state = {
-        seed: null,
-        data: null,
+        seed: '',
+        data: '',
         picPreview: null,
         picFile: null,
-        buttonmessage: 'Decode the data!'
+        buttonmessage: 'Decode the data!',
+        buttondisabled: false
     }
     handleChange = (e) =>{
         this.setState({
@@ -28,7 +29,10 @@ class Decode extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({buttonmessage: 'Loading...⌛'})
+        this.setState({
+            buttonmessage: 'Loading...⌛',
+            buttondisabled: true
+        })
         var form = new FormData()
         form.append('image', this.state.picFile)
         form.append('seed', this.state.seed)
@@ -50,10 +54,15 @@ class Decode extends Component {
                 <form onSubmit={this.handleSubmit}>
                 <p>First, enter the seed which was used in the encoding stage. If the seed is wrong, you will get gibberish back!</p>
                     <label htmlFor="seed">Enter seed for decryption</label>
-                    <input type="text" id="seed" onChange={this.handleChange}/>
+                    <input type="text" id="seed" onChange={this.handleChange} onKeyPress={e => {
+                        if (e.key === 'Enter') e.preventDefault();
+                      }}/>
                     <p>Next, upload the .PNG image which has the data hidden inside it.  <br/><br/><input type="file" onChange={this.handleImage}/></p>
-                    <img src={this.state.picPreview}/>
-                    <br/><br></br><button>{this.state.buttonmessage}</button>
+                    {this.state.picPreview
+                    ?<img src={this.state.picPreview} alt="There is data hidden here"/>
+                    : null
+                    }
+                    <br/><br></br><button disabled={this.state.buttondisabled}>{this.state.buttonmessage}</button>
                 </form>
             </div>
         ) : (
@@ -64,9 +73,10 @@ class Decode extends Component {
                     onClick={() => {
                         this.setState({
                             pic: null, 
-                            data: null, 
+                            data: '', 
                             picFile: null,
-                            buttonmessage: 'Decode the data!'
+                            buttonmessage: 'Decode the data!',
+                            buttondisabled: false
                         })
                     }}>Decode another image?</button>
                 

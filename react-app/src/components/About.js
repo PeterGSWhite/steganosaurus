@@ -12,10 +12,10 @@ const About = () => {
             <h2>How does it work?</h2>
             <ol>
                 <li>The React front end posts the user supplied fields to a Flask API</li>
-                <li>The Flask API retrieves a .PNG image from the <a target="_blank" href="https://picsum.photos/">LoremPicsum service</a> and encodes the data into it, then returns the image</li>
+                <li>The Flask API retrieves a .PNG image from the <a target="_blank"  rel="noreferrer" href="https://picsum.photos/">LoremPicsum service</a> and encodes the data into it, then returns the image</li>
                 <li>For decoding, the process works the same but in reverse</li>
             </ol>
-            <p>The source code can be found on my <a target="_blank" href="https://github.com/PeterGSWhite/steganosaurus">Github repo</a></p>
+            <p>The source code can be found on my <a target="_blank"  rel="noreferrer" href="https://github.com/PeterGSWhite/steganosaurus">Github repo</a></p>
         </div>
     )
 }
