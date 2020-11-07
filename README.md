@@ -43,18 +43,21 @@ cd steganosaurus/react-app
 yarn install
 ```
 3. Create venv and install python modules
-```(react-app)
+```
+react-app$
 python3 -m venv api/venv
 (POSIX)	source api/venv/bin/activate
 (Windows) api/venv/Scripts/activate
 pip install -r api/requirements.txt
 ```
-4. (react-app) Start the front-end
+4. Start the front-end
 ```
+react-app$
 yarn start
 ```
-5. (react-app) Start the back-end
+5. Start the back-end
 ```
+react-app$
 (POSIX) yarn start-api
 (Windows) yarn start-api-windows
 ```
