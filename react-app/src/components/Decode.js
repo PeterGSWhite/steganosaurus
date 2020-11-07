@@ -54,7 +54,7 @@ class Decode extends Component {
                 <form onSubmit={this.handleSubmit}>
                 <p>First, enter the seed which was used in the encoding stage. If the seed is wrong, you will get gibberish back!</p>
                     <label htmlFor="seed">Enter seed for decryption</label>
-                    <input type="text" id="seed" onChange={this.handleChange} onKeyPress={e => {
+                    <input type="text" id="seed" onChange={this.handleChange} autocomplete="off" onKeyPress={e => {
                         if (e.key === 'Enter') e.preventDefault();
                       }}/>
                     <p>Next, upload the .PNG image which has the data hidden inside it.  <br/><br/><input type="file" onChange={this.handleImage}/></p>

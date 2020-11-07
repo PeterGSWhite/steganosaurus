@@ -45,7 +45,7 @@ class Encode extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <p>First, choose a seed which will be used in the steganography algorithm. You will need to remember it if you want to decode your image again!</p>
                     <label htmlFor="seed">Enter seed for encryption</label>
-                    <input type="text" id="seed" onChange={this.handleChange} maxLength="100" onKeyPress={e => {
+                    <input type="text" id="seed" onChange={this.handleChange} maxLength="100" autocomplete="off" onKeyPress={e => {
                         if (e.key === 'Enter') e.preventDefault();
                     }}/>
                     <br></br>
