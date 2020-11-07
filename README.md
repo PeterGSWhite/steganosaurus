@@ -6,6 +6,7 @@
     An app for encoding messages into pictures using steganography.
     <br/>
     <a href="https://github.com/PeterGSWhite/steganosaurus"><strong>Explore the docs »</strong></a>
+    <br/>
     <a href="#demonstration"><strong>Demonstration</strong></a>
     
   </p>
