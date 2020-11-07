@@ -3,9 +3,10 @@
 <h3 align="center">STEGANOSAURUS</h3>
 
   <p align="center">
-    An app for encoding messages into pictures using steganography. See the [demonstration](#demonstration) for more. 
+    An app for encoding messages into pictures using steganography.
     <br/>
     <a href="https://github.com/PeterGSWhite/steganosaurus"><strong>Explore the docs »</strong></a>
+    <a href="#demonstration"><strong>Demonstration</strong></a>
     
   </p>
 
