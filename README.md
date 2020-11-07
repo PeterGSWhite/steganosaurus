@@ -1,9 +1,9 @@
 # Steganosaurus
 
-<h3 align="center">YOUR_TITLE</h3>
+<h3 align="center">STEGANOSAURUS</h3>
 
   <p align="center">
-    An app for encoding messages into pictures using steganography.
+    An app for encoding messages into pictures using steganography. See the [demonstration](demonstration) for more. 
     <br/>
     <a href="https://github.com/PeterGSWhite/steganosaurus"><strong>Explore the docs »</strong></a>
     
@@ -57,12 +57,13 @@ yarn start
 (Windows) yarn start-api-windows
 ```
 
+<!-- demonstration -->
 ### Demonstration
 
-* Encoding data into an image
+# Encoding data into an image
 
 ![demonstration of encoding data into an image](https://github.com/PeterGSWhite/steganosaurus/blob/main/encode.gif)
 
-* Decoding data from an image
+# Decoding data from an image
 
 ![demonstration of decoding data from an image](https://github.com/PeterGSWhite/steganosaurus/blob/main/decode.gif)
