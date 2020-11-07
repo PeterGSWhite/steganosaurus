@@ -42,18 +42,18 @@ git clone https://github.com/PeterGSWhite/steganosaurus.git
 cd steganosaurus/react-app
 yarn install
 ```
-3. \[/react-app/] Create venv and install python modules
+3. (react-app) Create venv and install python modules
 ```
 python3 -m venv api/venv
 (POSIX)	source api/venv/bin/activate
 (Windows) api/venv/Scripts/activate
 pip install -r api/requirements.txt
 ```
-4. \[/react-app/] Start the front-end
+4. (react-app) Start the front-end
 ```
 yarn start
 ```
-5. \[/react-app/] Start the back-end
+5. (react-app) Start the back-end
 ```
 (POSIX) yarn start-api
 (Windows) yarn start-api-windows
