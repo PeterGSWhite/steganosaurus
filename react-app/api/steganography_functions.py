@@ -29,10 +29,8 @@ def get_image_of_size(width):
     """Get a random square image of the supplied width"""
     url = f'https://picsum.photos/{width}' # Lorem picsum service will give a random square image of the supplied width
     print(url)
-    print(url)
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
-    img.show()
     return img
 
 def convert_data_to_ascii(data):
